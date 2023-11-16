@@ -3,43 +3,53 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class PuzzleJava {
-    private Random randMachine;
-
-    public PuzzleJava() {
-        this.randMachine = new Random();
-    }
-
     public ArrayList<Integer> getTenRolls() {
-        ArrayList<Integer> rolls = new ArrayList<Integer>();
-        for (int i = 0; i < 10; i++) {
-            rolls.add(randMachine.nextInt(20) + 1);
+
+        ArrayList<Integer> random10 = new ArrayList<Integer>();
+        Random rand = new Random();
+        for (int i = 1; i <=10; i++) {
+            random10.add(rand.nextInt(20) + 1);
         }
-        return rolls;
+        return random10;
     }
 
-    public char getRandomLetter() {
-        char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
-        return alphabet[randMachine.nextInt(26)];
-    }
-    public String generatePassword() {
-        StringBuilder password = new StringBuilder();
-        for (int i = 0; i < 8; i++) {
-            password.append(getRandomLetter());
+    public String getRandomLetterWithArray() {
+        Random rand = new Random();
+        String alphabetString = "abcdefghijklmnopqrstuvwxyz";
+        String[] alphabet = new String[26];
+        for (int i = 0; i < 26; i++) {
+            alphabet[i] = String.valueOf(alphabetString.charAt(i));
         }
-        return password.toString();
+        return alphabet[rand.nextInt(26)];
+    }
+
+    public String getRandomLetter() {
+        Random rand = new Random();
+        String alphabetString = "abcdefghijklmnopqrstuvwxyz";
+        char randomChar = alphabetString.charAt(rand.nextInt(26));
+        return String.valueOf(randomChar);
+    }
+
+    public String generatePassword() {
+        String password = "";
+        for(int i = 0; i < 8; i++) {
+            password = password + getRandomLetter();
+        }
+        return password;
     }
 
     public ArrayList<String> getNewPasswordSet(int length) {
         ArrayList<String> passwordSet = new ArrayList<String>();
-        for (int i = 0; i < length; i++) {
+        for(int i = 0; i < length; i++) {
             passwordSet.add(generatePassword());
         }
         return passwordSet;
     }
 
     public void shuffleArray(ArrayList<Integer> array) {
+        Random rand = new Random();
         for (int i = 0; i < array.size(); i++) {
-            int randomIndex = randMachine.nextInt(array.size());
+            int randomIndex = rand.nextInt(array.size());
             Collections.swap(array, i, randomIndex);
         }
     }

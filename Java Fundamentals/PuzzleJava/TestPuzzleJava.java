@@ -1,18 +1,24 @@
 import java.util.ArrayList;
-
+import java.util.Random;
 public class TestPuzzleJava {
+
     public static void main(String[] args) {
         PuzzleJava generator = new PuzzleJava();
-        
+
         ArrayList<Integer> randomRolls = generator.getTenRolls();
-        System.out.println("Random Rolls: " + randomRolls);
+        System.out.println("Random Array: " + randomRolls);
 
-        System.out.println("Random Letter: " + generator.getRandomLetter());
+        String randomLetterWithArr = generator.getRandomLetterWithArray();
+        System.out.println("Random Letter with Array: " + randomLetterWithArr );
 
-        System.out.println("Random Password: " + generator.generatePassword());
+        String randomLetter = generator.getRandomLetter();
+        System.out.println("Random Letter: " + randomLetter);
 
-        ArrayList<String> passwordSet = generator.getNewPasswordSet(10);
-        System.out.println("Password Set: " + passwordSet);
+        String randomPass = generator.generatePassword();
+        System.out.println("Random Password: " + randomPass);
+
+        ArrayList<String> randomNewPass = generator.getNewPasswordSet(10);
+        System.out.println("Random New Password: " + randomNewPass);
 
         ArrayList<Integer> numbersToShuffle = new ArrayList<Integer>();
         for (int i = 1; i <= 10; i++) {
