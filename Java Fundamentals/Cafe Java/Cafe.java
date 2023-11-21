@@ -32,7 +32,7 @@ public class Cafe {
 
         //Cindhuri
         System.out.println(generalGreeting + customer1);
-        if (!isReadyOrder5) {
+        if (!isReadyOrder1) {
             System.out.println(customer1 + pendingMessage);
         } else {
             System.out.println(customer1 + readyMessage);
@@ -41,7 +41,7 @@ public class Cafe {
 
         //Artan
         System.out.println(generalGreeting + customer2);
-        if (!isReadyOrder5) {
+        if (!isReadyOrder2) {
             System.out.println(customer2 + pendingMessage);
         } else {
             System.out.println(customer2 + readyMessage);
