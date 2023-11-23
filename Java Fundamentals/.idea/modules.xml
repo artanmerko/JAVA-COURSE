@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Baristas Challenge/Baristas Challenge.iml" filepath="$PROJECT_DIR$/Baristas Challenge/Baristas Challenge.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Java Fundamentals.iml" filepath="$PROJECT_DIR$/Java Fundamentals.iml" />
+      <module fileurl="file://$PROJECT_DIR$/OrdersItem/OrdersItem.iml" filepath="$PROJECT_DIR$/OrdersItem/OrdersItem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TestCafe/TestCafe.iml" filepath="$PROJECT_DIR$/TestCafe/TestCafe.iml" />
+      <module fileurl="file://$PROJECT_DIR$/firstProgram/firstProgram.iml" filepath="$PROJECT_DIR$/firstProgram/firstProgram.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hello/hello.iml" filepath="$PROJECT_DIR$/hello/hello.iml" />
+    </modules>
+  </component>
+</project>
