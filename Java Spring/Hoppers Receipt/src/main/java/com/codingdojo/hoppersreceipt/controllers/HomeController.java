@@ -23,7 +23,6 @@ public class HomeController {
         model.addAttribute("vendor", vendor);
         return "index";
     }
-    //...
 
 
 }
