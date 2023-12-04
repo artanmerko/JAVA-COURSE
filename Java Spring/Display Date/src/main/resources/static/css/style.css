@@ -1,0 +1,22 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+div {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    margin-top: 350px;
+}
+
+a {
+    color: #3b82f6;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+a:hover {
+    background-color: #e0e0e0;
+}
