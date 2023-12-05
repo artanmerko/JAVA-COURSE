@@ -41,3 +41,6 @@ spring.mvc.view.prefix=/WEB-INF/
 spring.mvc.view.suffix=.jsp
 
 
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+
+
