@@ -1,0 +1,13 @@
+body, p {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 10px;
+}
+.links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.links a, .links form {
+    margin: 10px;
+}
