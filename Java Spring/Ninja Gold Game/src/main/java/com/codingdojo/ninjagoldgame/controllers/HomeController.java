@@ -1,91 +1,85 @@
 package com.codingdojo.ninjagoldgame.controllers;
 
-import jakarta.servlet.http.HttpSession;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
+import jakarta.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 @Controller
-@RequestMapping("/gold")
-@SessionAttributes("gold")
 public class HomeController {
-
-    private final Random random = new Random();
-
-    @RequestMapping("")
-    public String index(HttpSession session) {
-        session.setAttribute("gold", 0);
-        session.setAttribute("activities", new ArrayList<String>());
-        return "redirect:/gold/game";
+    @RequestMapping("/activities")
+    public String activities() {
+        return "activities.jsp";
     }
 
-    @RequestMapping("/game")
-    public String game() {
-        return "game";
-    }
+    @SuppressWarnings("unchecked")
+    @RequestMapping("/")
+    public String index(
+            HttpSession session,
+            @RequestParam(value="farm", required=false) String farm,
+            @RequestParam(value="cave", required=false) String cave,
+            @RequestParam(value="house", required=false) String house,
+            @RequestParam(value="quest", required=false) String quest
+    ) {
+        int gold = 0;
+        ArrayList<String> activities = new ArrayList<String>();
 
-    @PostMapping("/find")
-    public String findGold(HttpSession session, @RequestParam("building") String building) {
-        int gold = (int) session.getAttribute("gold");
-        ArrayList<String> activities = (ArrayList<String>) session.getAttribute("activities");
-        int goldFound = 0;
-        String activity;
-        Date date = new Date();
+        SimpleDateFormat simpleFormat = new SimpleDateFormat("MMMM d Y h:mm a");
 
-        switch (building) {
-            case "farm":
-                goldFound = random.nextInt(11) + 10;
-                break;
-            case "cave":
-                goldFound = random.nextInt(6) + 5;
-                break;
-            case "house":
-                goldFound = random.nextInt(4) + 2;
-                break;
-            case "quest":
-                goldFound = random.nextInt(101) - 50;
-                break;
-            case "spa": // Ninja Bonus 1
-                goldFound = -(random.nextInt(16) + 5);
-                break;
+        if(session.getAttribute("gold")==null) {
+            session.setAttribute("gold", gold);
+            session.setAttribute("activities", activities);
+        }else {
+            gold = (int) session.getAttribute("gold");
+            activities = (ArrayList<String>) session.getAttribute("activities");
         }
 
-        if (goldFound >= 0) {
-            activity = "You entered a " + building + " and earned " + goldFound + " gold. (" + date + ")";
-        } else {
-            activity = "You entered a " + building + " and lost " + Math.abs(goldFound) + " gold. Ouch. (" + date + ")";
+        if(farm != null) {
+            int amount = new Random().nextInt(11)+10;
+            gold+=amount;
+            activities.add(0, "You entered a farm and earned "+amount+" gold. ("+simpleFormat.format(new Date())+")");
+            session.setAttribute("activities", activities);
+            session.setAttribute("gold", gold);
+            return "redirect:/";
         }
 
-        // Update
-        session.setAttribute("gold", gold + goldFound);
-        activities.add(activity);
-        session.setAttribute("activities", activities);
-
-        // check
-        if ((int) session.getAttribute("gold") < -50) {
-            return "redirect:/gold/debtorsPrison";
+        if(cave != null) {
+            int amount = new Random().nextInt(6)+5;
+            gold+=amount;
+            activities.add(0, "You entered a cave and earned "+amount+" gold. ("+simpleFormat.format(new Date())+")");
+            session.setAttribute("activities", activities);
+            session.setAttribute("gold", gold);
+            return "redirect:/";
         }
 
-        return "redirect:/gold/game";
-    }
+        if(house != null) {
+            int amount = new Random().nextInt(4)+2;
+            gold+=amount;
+            activities.add(0, "You entered a house and earned "+amount+" gold. ("+simpleFormat.format(new Date())+")");
+            session.setAttribute("activities", activities);
+            session.setAttribute("gold", gold);
+            return "redirect:/";
+        }
 
-    // debtors' prison page.
-    @RequestMapping("/debtorsPrison")
-    public String debtorsPrison(HttpSession session) {
-        return "debtorsPrison";
-    }
+        if(quest != null) {
+            int amount = new Random().nextInt(101)-50;
+            gold+=amount;
+            if(amount>=0) {
+                activities.add(0, "You completed a quest and earned "+amount+" gold. ("+simpleFormat.format(new Date())+")");
+            }else {
+                activities.add(0, "You failed a quest and lost "+(amount*-1)+" gold. ("+simpleFormat.format(new Date())+")");
+            }
+            session.setAttribute("activities", activities);
+            session.setAttribute("gold", gold);
+            return "redirect:/";
+        }
 
-    //reset
-    @PostMapping("/reset")
-    public String reset(SessionStatus status) {
-        status.setComplete();
-        return "redirect:/gold";
+        return "index.jsp";
     }
-
 }
