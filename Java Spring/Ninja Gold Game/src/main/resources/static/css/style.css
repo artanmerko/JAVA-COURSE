@@ -1,0 +1,17 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.container .activity {
+    text-align: center;
+    margin: 0 10px;
+}
+.container .activity form {
+    margin-top: 10px;
+}
+textarea {
+    width: 100%;
+    height: 400px;
+    margin-top: 20px;
+}
