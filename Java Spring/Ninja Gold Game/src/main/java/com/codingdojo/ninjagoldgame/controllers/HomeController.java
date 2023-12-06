@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class HomeController {
     @RequestMapping("/activities")
     public String activities() {
-        return "activities.jsp";
+        return "activities";
     }
 
     @SuppressWarnings("unchecked")
@@ -80,6 +80,6 @@ public class HomeController {
             return "redirect:/";
         }
 
-        return "index.jsp";
+        return "index";
     }
 }
