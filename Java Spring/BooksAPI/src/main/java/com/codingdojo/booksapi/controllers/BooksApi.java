@@ -1,12 +1,10 @@
 package com.codingdojo.booksapi.controllers;
 
+import com.codingdojo.booksapi.BookDTO;
 import com.codingdojo.booksapi.models.Book;
 import com.codingdojo.booksapi.services.BookService;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,30 +22,39 @@ public class BooksApi {
     }
 
     @RequestMapping(value="/api/books", method=RequestMethod.POST)
-    public Book create(
-            @RequestParam(value="title") String title,
-            @RequestParam(value="description") String desc,
-            @RequestParam(value="language") String lang,
-            @RequestParam(value="pages") Integer numOfPages){
-        Book book = new Book(title, desc, lang, numOfPages);
+    public Book create(@RequestBody BookDTO bookDTO) {
+        Book book = new Book(bookDTO.getTitle(), bookDTO.getDescription(),
+                bookDTO.getLanguage(), bookDTO.getNumberOfPages());
         return bookService.createBook(book);
     }
 
     @RequestMapping("/api/books/{id}")
-    public Book show(@PathVariable("id") Long id) {
-        Book book = bookService.findBook(id);
-        return book;
+    public ResponseEntity<Book> show(@PathVariable("id") Long id) {
+        return bookService.findBook(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @RequestMapping(value="/api/books/{id}", method=RequestMethod.PUT)
-    public Book update(@PathVariable("id") Long id, @RequestParam(value="title") String title, @RequestParam(value="description") String desc, @RequestParam(value="language") String lang, @RequestParam(value="pages") Integer numOfPages) {
-        Book book = new Book(title, desc, lang, numOfPages);
-        book.setId(id);
-        return bookService.updateBook(book);
+    public ResponseEntity<Book> update(@PathVariable("id") Long id, @RequestBody BookDTO bookDTO) {
+        return bookService.findBook(id)
+                .map(book -> {
+                    book.setTitle(bookDTO.getTitle());
+                    book.setDescription(bookDTO.getDescription());
+                    book.setLanguage(bookDTO.getLanguage());
+                    book.setNumberOfPages(bookDTO.getNumberOfPages());
+                    return ResponseEntity.ok(bookService.updateBook(book));
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @RequestMapping(value="/api/books/{id}", method=RequestMethod.DELETE)
-    public void destroy(@PathVariable("id") Long id) {
-        bookService.deleteBook(id);
+    public ResponseEntity<?> destroy(@PathVariable("id") Long id) {
+        return bookService.findBook(id)
+                .map(book -> {
+                    bookService.deleteBook(id);
+                    return ResponseEntity.ok().build();
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
