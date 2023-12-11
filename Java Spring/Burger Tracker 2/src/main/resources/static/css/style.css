@@ -1,0 +1,97 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4;
+    padding: 2vw;
+    text-align: center;
+}
+
+h1, h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+h1, h2, form {
+    text-align: center;
+}
+
+.table {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.table th, .table td {
+    text-align: center;
+}
+.action-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.edit-btn {
+    background-color: #007bff;
+    color: white;
+    border: 1px solid transparent;
+    padding: 3px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.edit-btn:hover {
+    background-color: darkblue;
+    color: white;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+    border: 1px solid transparent;
+    padding: 3px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background-color: darkred;
+    color: darkblue;
+}
+
+.edit-btn, .delete-btn {
+    flex: 1 1 auto;
+    text-align: center;
+}
+table{
+    width: 500px;
+}
+form {
+    background-color: #f4f4f4;
+    padding: 3px 10px;
+
+}
+.add-burger, .edit-burger {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.add-burger:hover, .edit-burger:hover {
+    background-color: #218838;
+}
+
+.edit-head{
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+.back{
+    padding-top: 8px;
+    padding-left: 10px;
+}
