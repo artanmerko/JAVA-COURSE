@@ -29,7 +29,7 @@ h1, h2, form {
     justify-content: space-between;
     align-items: center;
 }
-
+ /*edit btn*/
 .edit-btn {
     background-color: #007bff;
     color: white;
