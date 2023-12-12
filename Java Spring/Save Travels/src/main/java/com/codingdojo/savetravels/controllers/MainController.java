@@ -17,14 +17,15 @@ public class MainController {
     TravelService travelService;
 
     @GetMapping("/")
-    public String home(@ModelAttribute("travel")Travel travel, Model model){
+    public String home(@ModelAttribute("travel") Travel travel, Model model) {
         List<Travel> travels = travelService.allTravels();
         model.addAttribute("travels", travels);
         return "index";
     }
+
     @PostMapping("/addTravel")
-    public String home(@Valid @ModelAttribute("travel")Travel travel, BindingResult result, Model model){
-        if(result.hasErrors()){
+    public String home(@Valid @ModelAttribute("travel") Travel travel, BindingResult result, Model model) {
+        if (result.hasErrors()) {
             List<Travel> travels = travelService.allTravels();
             model.addAttribute("travels", travels);
             return "index";
@@ -35,13 +36,14 @@ public class MainController {
     }
 
     @GetMapping("/edit/{id}")
-    public String editTravel(@PathVariable("id") Long id, @ModelAttribute("travel") Travel travel, Model model){
+    public String editTravel(@PathVariable("id") Long id, @ModelAttribute("travel") Travel travel, Model model) {
         model.addAttribute("travel", travelService.findTravel(id));
         return "edit";
     }
+
     @PostMapping("/edit/{id}")
-    public String updateTravel(@Valid @ModelAttribute("travel")Travel travel, BindingResult result, @PathVariable("id") Long id, Model model){
-        if(result.hasErrors()){
+    public String updateTravel(@Valid @ModelAttribute("travel") Travel travel, BindingResult result, @PathVariable("id") Long id, Model model) {
+        if (result.hasErrors()) {
             model.addAttribute("travel", travel);
             return "index";
         } else {
@@ -49,9 +51,21 @@ public class MainController {
             return "redirect:/";
         }
     }
+
     @DeleteMapping("/delete/{id}")
-    public String destroy (@PathVariable("id") Long id){
+    public String destroy(@PathVariable("id") Long id) {
         travelService.deleteTravel(id);
         return "redirect:/";
+    }
+
+    @GetMapping("/detail/{id}")
+    public String detail(@PathVariable("id") Long id, Model model){
+        Travel travel = travelService.findTravel(id);
+        if(travel != null){
+            model.addAttribute("travel", travel);
+            return "detail";
+        } else {
+            return "redirect:/";
+        }
     }
 }
