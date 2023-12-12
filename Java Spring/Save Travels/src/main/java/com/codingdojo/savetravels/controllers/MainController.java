@@ -57,7 +57,6 @@ public class MainController {
         travelService.deleteTravel(id);
         return "redirect:/";
     }
-
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable("id") Long id, Model model){
         Travel travel = travelService.findTravel(id);
