@@ -18,30 +18,30 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
-<h1>Change your entry</h1>
-<a href="/home">Back to the shelves.</a>
-<br>
+<div class="container mt-4">
+  <h1 class="mb-3">Change your entry</h1>
+  <a href="/home" class="btn btn-secondary mb-3">Back to the shelves</a>
 
-<%--@elvariable id="bookEdit" type="javax"--%>
-<form:form method="put" action="/books/${bookEdit.id}/update" modelAttribute="bookEdit">
+  <%--@elvariable id="bookEdit" type="javax"--%>
+  <form:form method="put" action="/books/${bookEdit.id}/update" modelAttribute="bookEdit" class="mb-3">
 
-  <p class="form-group">
-    <form:label path="title">Title:</form:label>
-    <form:input path="title" class="form-control"></form:input>
-    <form:errors path="title" class="text-danger"></form:errors>
-  </p>
-  <p class="form-group">
-    <form:label path="author">Author:</form:label>
-    <form:input path="author" class="form-control"></form:input>
-    <form:errors path="author" class="text-danger"></form:errors>
-  </p>
-  <p class="form-group">
-    <form:label path="thoughts">My thoughts:</form:label>
-    <form:input path="thoughts" class="form-control"></form:input>
-    <form:errors path="thoughts" class="text-danger"></form:errors>
-  </p>
-  <button class="btn btn-info">Submit</button>
-</form:form>
-
+    <div class="mb-3">
+      <form:label path="title" class="form-label">Title:</form:label>
+      <form:input path="title" class="form-control"></form:input>
+      <form:errors path="title" class="text-danger"></form:errors>
+    </div>
+    <div class="mb-3">
+      <form:label path="author" class="form-label">Author:</form:label>
+      <form:input path="author" class="form-control"></form:input>
+      <form:errors path="author" class="text-danger"></form:errors>
+    </div>
+    <div class="mb-3">
+      <form:label path="thoughts" class="form-label">My thoughts:</form:label>
+      <form:textarea path="thoughts" class="form-control" rows="3"></form:textarea>
+      <form:errors path="thoughts" class="text-danger"></form:errors>
+    </div>
+    <button type="submit" class="btn btn-info">Submit</button>
+  </form:form>
+</div>
 </body>
 </html>

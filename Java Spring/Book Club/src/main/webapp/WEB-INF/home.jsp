@@ -19,38 +19,41 @@
     <meta charset="UTF-8">
     <title>Book Club</title>
     <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/main.css"> <!-- change to match your file/naming structure -->
+    <link rel="stylesheet" href="/css/main.css"> <!-- Adjust as per your file structure -->
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
 
-<div class="container">
-    <h1>Welcome, <c:out value="${user.userName}"/></h1>
+<div class="container mt-4">
+    <h1 class="mb-3">Welcome, <c:out value="${user.userName}"/></h1>
 
-    <h3>Books from everyone shelves:</h3>
-    <a href="/logout">logout</a>
-    <a href="/addPage">+ Add to my shelf</a>
+    <h3 class="mb-3">Books from everyone's shelves:</h3>
 
-    <table class="table">
+    <div class="d-flex justify-content-between mb-3">
+        <a href="/logout" class="btn btn-outline-secondary">Logout</a>
+        <a href="/addPage" class="btn btn-primary">+ Add to my shelf</a>
+    </div>
 
+    <table class="table table-striped">
+        <thead>
         <tr>
             <th>ID</th>
             <th>Title</th>
             <th>Author Name</th>
             <th>Posted By</th>
         </tr>
+        </thead>
+        <tbody>
         <c:forEach var="book" items="${books}">
-
             <tr>
                 <td><c:out value="${book.id}"/></td>
                 <td><a href="/books/${book.id}"><c:out value="${book.title}"/></a></td>
                 <td><c:out value="${book.author}"/></td>
                 <td><c:out value="${book.user.userName}"/></td>
-
             </tr>
         </c:forEach>
-
+        </tbody>
     </table>
 </div>
 

@@ -19,53 +19,48 @@
     <meta charset="UTF-8">
     <title>Book Club</title>
     <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/main.css"> <!-- change to match your file/naming structure -->
+    <link rel="stylesheet" href="/css/main.css"> <!-- Adjust to match your file/naming structure -->
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div class="container">
+<div class="container my-4">
 
-    <h1>Add to Your Book Shelf</h1>
+    <h1 class="mb-3">Add to Your Book Shelf</h1>
 
-    <a href="/home">back to shelves</a>
+    <a href="/home" class="btn btn-secondary mb-3">Back to shelves</a>
 
-    <div class="container">
-        <form:form action="/books" modelAttribute="book" class="form" method="post">
+    <form:form action="/books" modelAttribute="book" method="post">
 
-            <div class="form-row">
-                <form:errors path="title" class="error"/>
-                <form:label for="title" path="title">Title:</form:label>
-                <form:input type="text" path="title" class="form-control"/>
-            </div>
+        <div class="mb-3">
+            <form:label path="title" class="form-label">Title:</form:label>
+            <form:input type="text" path="title" class="form-control"/>
+            <form:errors path="title" class="text-danger"/>
+        </div>
 
-            <div class="form-row">
-                <form:errors path="author" class="error"/>
-                <form:label for="author" path="author">Author:</form:label>
-                <form:input type="text" path="author" class="form-control"/>
-            </div>
+        <div class="mb-3">
+            <form:label path="author" class="form-label">Author:</form:label>
+            <form:input type="text" path="author" class="form-control"/>
+            <form:errors path="author" class="text-danger"/>
+        </div>
 
-            <div class="form-row">
-                <form:errors path="thoughts" class="error"/>
-                <form:label for="thoughts" path="thoughts">Thoughts:</form:label>
-                <form:textarea path="thoughts" class="form-control"/>
-            </div>
+        <div class="mb-3">
+            <form:label path="thoughts" class="form-label">Thoughts:</form:label>
+            <form:textarea path="thoughts" class="form-control" rows="3"></form:textarea>
+            <form:errors path="thoughts" class="text-danger"/>
+        </div>
 
-            <div class="form-row">
-                <form:errors path="user" class="error"/>
-                <form:input type="hidden" path="user" value="${user.id}" class="form-control"/>
-            </div>
+        <div class="mb-3">
+            <form:input type="hidden" path="user" value="${user.id}"/>
+            <form:errors path="user" class="text-danger"/>
+        </div>
 
-            <div class="form-row">
-                <input type="submit" value="Submit" class="btn-primary"/>
-            </div>
+        <div class="d-grid">
+            <input type="submit" value="Submit" class="btn btn-primary"/>
+        </div>
 
-        </form:form>
-    </div>
-
-
+    </form:form>
 
 </div>
-
 </body>
 </html>

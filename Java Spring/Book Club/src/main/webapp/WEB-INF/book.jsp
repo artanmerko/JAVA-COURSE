@@ -17,30 +17,50 @@
     <title>Read Share</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
+<style>
+    .thoughts-style {
+        border-top: 2px solid #000;
+        border-bottom: 2px solid #000;
+        padding: 20px 0;
+        font-style: italic;
+    }
+</style>
 <body>
-<a href="/home">Back to the shelves.</a>
-<br>
-<h1>${book.title}</h1>
-<br>
+<div class="container mt-4">
+    <a href="/home" class="btn btn-secondary mb-3">Back to the shelves</a>
+    <h1 class="mb-3">${book.title}</h1>
 
-<c:choose>
-    <c:when test="${book.user.equals(user)}">
-        <p>${book.user.userName} read ${book.title} by ${book.author}.</p>
-    </c:when>
-    <c:otherwise>
-        <p>${book.user.userName} read ${book.title} by ${book.author}.</p>
-    </c:otherwise>
-</c:choose>
-<p>Here are ${book.user.userName}'s thoughts: </p>
-<p>${book.thoughts}</p>
+    <c:choose>
+        <c:when test="${book.user.equals(user)}">
+            <p style="font-weight: bold;">
+                <span style="color: red;">${book.user.userName}</span> read
+                <span style="color: purple;">${book.title}</span> by
+                <span style="color: green;">${book.author}</span>.
+            </p>
+        </c:when>
+        <c:otherwise>
+            <p style="font-weight: bold;">
+                <span style="color: red;">${book.user.userName}</span> read
+                <span style="color: purple;">${book.title}</span> by
+                <span style="color: green;">${book.author}</span>.
+            </p>
+        </c:otherwise>
+    </c:choose>
 
-<br>
-<c:if test="${book.user.equals(user)}">
-    <a href="/books/${book.id}/edit">Edit</a>
-    <form:form action="/books/${book.id}/delete" method="delete">
-        <button class="btn btn-danger">Delete</button>
-    </form:form>
+    <p class="font-weight-bold">Here are ${book.user.userName}'s thoughts:</p>
+    <blockquote class="thoughts-style">
+        ${book.thoughts}
+    </blockquote>
 
-</c:if>
+    <c:if test="${book.user.equals(user)}">
+        <div class="d-flex justify-content-end">
+            <a href="/books/${book.id}/edit" class="btn btn-primary me-2">Edit</a>
+            <form:form action="/books/${book.id}/delete" method="delete">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form:form>
+        </div>
+    </c:if>
+</div>
 </body>
 </html>
+
