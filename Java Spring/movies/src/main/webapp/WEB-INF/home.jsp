@@ -27,11 +27,7 @@
     <h1 class="mb-3">Welcome, <c:out value="${user.userName}"/></h1>
 
     <h3 class="mb-3">TV SHOWS</h3>
-
-    <div class="d-flex justify-content-between mb-3">
-        <a href="/logout" class="btn btn-outline-secondary">Logout</a>
-        <a href="/addPage" class="btn btn-primary">+ Add to my movies</a>
-    </div>
+    <a href="/logout" class="btn btn-outline-secondary">Logout</a>
 
     <table class="table table-striped">
         <thead>
@@ -40,6 +36,7 @@
             <th>Title</th>
             <th>Network</th>
             <th>Posted By</th>
+            <th>Average Rating</th>
         </tr>
         </thead>
         <tbody>
@@ -49,10 +46,13 @@
                 <td><a href="/movies/${movie.id}"><c:out value="${movie.title}"/></a></td>
                 <td><c:out value="${movie.network}"/></td>
                 <td><c:out value="${movie.user.userName}"/></td>
+                <td><fmt:formatNumber value="${movie.averageRating}" minFractionDigits="1" maxFractionDigits="1"/></td>
             </tr>
         </c:forEach>
         </tbody>
     </table>
+    <a href="/addPage" class="btn btn-primary">+ Add a show</a>
+
 </div>
 
 </body>

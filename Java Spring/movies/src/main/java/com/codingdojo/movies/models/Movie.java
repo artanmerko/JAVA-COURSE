@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "movies")
@@ -30,6 +31,19 @@ public class Movie {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
     private User user;
+
+    @OneToMany(mappedBy="movie", fetch=FetchType.LAZY)
+    private List<Rating> ratings;
+    public double getAverageRating() {
+        if (ratings.isEmpty()) {
+            return 0.0;
+        }
+        double sum = 0.0;
+        for (Rating rating : ratings) {
+            sum += rating.getScore();
+        }
+        return sum / ratings.size();
+    }
 
     public Movie(){}
 

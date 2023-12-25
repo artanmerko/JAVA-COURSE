@@ -2,6 +2,7 @@ package com.codingdojo.movies.controllers;
 
 import com.codingdojo.movies.models.LoginUser;
 import com.codingdojo.movies.models.Movie;
+import com.codingdojo.movies.models.Rating;
 import com.codingdojo.movies.models.User;
 import com.codingdojo.movies.services.MovieService;
 import com.codingdojo.movies.services.UserService;
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class HomeController {
@@ -99,10 +103,14 @@ public class HomeController {
             return "redirect:/home";
         }
         Movie movie = movies.findById(id);
+        List<Rating> ratings = movies.getRatingsForMovie(id);
         model.addAttribute("movies", movie);
+        model.addAttribute("ratings", ratings);
+        model.addAttribute("rating", new Rating());
         model.addAttribute("user", users.findById((Long)session.getAttribute("userId")));
         return "movie";
     }
+
 
     @GetMapping("/movies/{id}/edit")
     public String getEditMovie(@PathVariable("id") Long id, Model model,HttpSession session){
@@ -137,5 +145,28 @@ public class HomeController {
         movies.deleteMovie(id);
         return "redirect:/home";
     }
+
+    @PostMapping("/movies/{movieId}/rate")
+    public String rateMovie(@PathVariable("movieId") Long movieId, @RequestParam("score") Double score, HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            return "redirect:/login";
+        }
+
+        Optional<Rating> existingRating = movies.findRatingByUserAndMovie(userId, movieId);
+        Rating rating;
+        if (existingRating.isPresent()) {
+            rating = existingRating.get();
+            rating.setScore(score);
+        } else {
+            rating = new Rating();
+            rating.setUser(users.findById(userId));
+            rating.setMovie(movies.findById(movieId));
+            rating.setScore(score);
+        }
+        movies.saveRating(rating);
+        return "redirect:/movies/" + movieId;
+    }
+
 
 }

@@ -1,7 +1,9 @@
 package com.codingdojo.movies.services;
 
 import com.codingdojo.movies.models.Movie;
+import com.codingdojo.movies.models.Rating;
 import com.codingdojo.movies.repositories.MovieRepository;
+import com.codingdojo.movies.repositories.RatingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,9 @@ import java.util.Optional;
 public class MovieService {
     @Autowired
     private MovieRepository movieRepository;
+
+    @Autowired
+    private RatingRepository ratingRepository;
 
     public Movie findById(Long id){
         Optional<Movie> result = movieRepository.findById(id);
@@ -43,5 +48,23 @@ public class MovieService {
 
     public void deleteMovie(Long id){
         movieRepository.deleteById(id);
+    }
+
+    public List<Rating> getRatingsForMovie(Long movieId) {
+        List<Rating> ratings = ratingRepository.findByMovieIdOrderByScoreDesc(movieId);
+        return ratings;
+    }
+
+
+    public Rating addRating(Rating rating) {
+        return ratingRepository.save(rating);
+    }
+
+    public Rating saveRating(Rating rating) {
+        return ratingRepository.save(rating);
+    }
+
+    public Optional<Rating> findRatingByUserAndMovie(Long userId, Long movieId) {
+        return ratingRepository.findByUserIdAndMovieId(userId, movieId);
     }
 }

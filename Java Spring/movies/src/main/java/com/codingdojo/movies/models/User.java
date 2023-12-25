@@ -40,6 +40,9 @@ public class User {
     @OneToMany(mappedBy="user", fetch=FetchType.LAZY)
     private List<Movie> movies;
 
+    @OneToMany(mappedBy="user", fetch=FetchType.LAZY)
+    private List<Rating> ratings;
+
     public User() { }
 
     @PrePersist
