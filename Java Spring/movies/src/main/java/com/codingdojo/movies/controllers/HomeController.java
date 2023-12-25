@@ -83,7 +83,13 @@ public class HomeController {
         if (result.hasErrors()) {
             return "addPage";
         }
-        movies.createMovie(movie);
+        try {
+            movies.createMovie(movie);
+        } catch (IllegalArgumentException e) {
+            result.rejectValue("title", "error.movie", "A movie with this title already exists.");
+            return "addPage";
+        }
+
         return "redirect:/home";
     }
 
@@ -116,7 +122,12 @@ public class HomeController {
             return "editMovie";
         } else {
             movieEdit.setUser(userLogged);
-            movies.createMovie(movieEdit);
+            try {
+                movies.updateMovie(movieEdit);
+            } catch (IllegalArgumentException e) {
+                result.rejectValue("title", "error.movie", "A movie with this title already exists.");
+                return "editMovie";
+            }
             return "redirect:/home";
         }
     }

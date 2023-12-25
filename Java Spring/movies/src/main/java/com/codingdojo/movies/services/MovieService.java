@@ -26,6 +26,18 @@ public class MovieService {
     }
 
     public Movie createMovie(Movie movie){
+        Optional<Movie> existingMovie = movieRepository.findByTitle(movie.getTitle());
+        if (existingMovie.isPresent()) {
+            throw new IllegalArgumentException("Movie with the same title already exists");
+        }
+        return movieRepository.save(movie);
+    }
+
+    public Movie updateMovie(Movie movie) {
+        Optional<Movie> existingMovie = movieRepository.findByTitle(movie.getTitle());
+        if (existingMovie.isPresent() && !existingMovie.get().getId().equals(movie.getId())) {
+            throw new IllegalArgumentException("Movie with the same title already exists");
+        }
         return movieRepository.save(movie);
     }
 

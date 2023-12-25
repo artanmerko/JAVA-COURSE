@@ -13,6 +13,7 @@ public class Movie {
     private Long id;
 
     @NotBlank(message="Title required")
+    @Column(unique = true)
     private String title;
 
     @NotBlank(message="Network required")
