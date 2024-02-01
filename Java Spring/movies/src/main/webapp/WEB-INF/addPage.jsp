@@ -5,11 +5,11 @@
   Time: 10:20 AM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page isErrorPage="true" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"  %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html>
@@ -49,13 +49,21 @@
         </div>
 
         <div class="mb-3">
-            <form:input type="hidden" path="user" value="${user.id}"/>
-            <form:errors path="user" class="text-danger"/>
+            <form:label path="pictureUrl" class="form-label">Picture URL:</form:label>
+            <form:input type="text" path="pictureUrl" class="form-control" placeholder="Picture URL"/>
+            <form:errors path="pictureUrl" class="text-danger"/>
+        </div>
+
+        <div class="mb-3">
+            <form:label path="videoTrailerUrl" class="form-label">Video Trailer URL:</form:label>
+            <form:input type="text" path="videoTrailerUrl" class="form-control" placeholder="videoTrailer URL"/>
+            <form:errors path="videoTrailerUrl" class="text-danger"/>
         </div>
 
         <div class="d-grid">
             <input type="submit" value="Submit" class="btn btn-primary"/>
         </div>
+
 
     </form:form>
 

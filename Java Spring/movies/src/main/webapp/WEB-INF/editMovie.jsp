@@ -40,6 +40,16 @@
             <form:textarea path="description" class="form-control" rows="3"></form:textarea>
             <form:errors path="description" class="text-danger"></form:errors>
         </div>
+        <div class="mb-3">
+            <form:label path="pictureUrl" class="form-label">Picture URL:</form:label>
+            <form:input path="pictureUrl" class="form-control"></form:input>
+            <form:errors path="pictureUrl" class="text-danger"></form:errors>
+        </div>
+        <div class="mb-3">
+            <form:label path="videoTrailerUrl" class="form-label">Video Trailer URL:</form:label>
+            <form:input path="videoTrailerUrl" class="form-control"></form:input>
+            <form:errors path="videoTrailerUrl" class="text-danger"></form:errors>
+        </div>
         <button type="submit" class="btn btn-info">Submit</button>
     </form:form>
 </div>

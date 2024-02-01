@@ -1,14 +1,14 @@
 package com.codingdojo.movies.controllers;
 
-import com.codingdojo.movies.models.LoginUser;
-import com.codingdojo.movies.models.Movie;
-import com.codingdojo.movies.models.Rating;
-import com.codingdojo.movies.models.User;
+import com.codingdojo.movies.models.*;
 import com.codingdojo.movies.services.MovieService;
 import com.codingdojo.movies.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -66,12 +66,27 @@ public class HomeController {
     }
 
     @GetMapping("/home")
-    public String home(Model model, HttpSession session) {
-        if(session.getAttribute("userId") == null) {
+    public String home(Model model, HttpSession session, @RequestParam(defaultValue = "0") int page) {
+        if (session.getAttribute("userId") == null) {
             return "redirect:/";
         }
-        model.addAttribute("movies", movies.getAll());
-        model.addAttribute("user", users.findById((Long)session.getAttribute("userId")));
+
+        // Define the number of items per page
+        int pageSize = 10;
+
+        // Create a Pageable object to represent the pagination information
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        // Retrieve movies using pagination
+        Page<Movie> moviePage = movies.getAll(pageable);
+
+        model.addAttribute("movies", moviePage.getContent());
+        model.addAttribute("user", users.findById((Long) session.getAttribute("userId")));
+
+        // Pass pagination information to the view
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", moviePage.getTotalPages());
+
         return "home";
     }
 
@@ -83,10 +98,22 @@ public class HomeController {
     }
 
     @PostMapping("/movies")
-    public String createMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult result) {
+    public String createMovie(@Valid @ModelAttribute("movie") Movie movie,
+                              BindingResult result,
+                              @RequestParam("pictureUrl") String pictureUrl,
+                              @RequestParam("videoTrailerUrl") String videoTrailerUrl,
+                              HttpSession session) {
         if (result.hasErrors()) {
             return "addPage";
         }
+
+        Long userId = (Long) session.getAttribute("userId");
+        User user = users.findById(userId);
+
+        movie.setUser(user);
+        movie.setPictureUrl(pictureUrl);
+        movie.setVideoTrailerUrl(videoTrailerUrl);
+
         try {
             movies.createMovie(movie);
         } catch (IllegalArgumentException e) {
@@ -97,19 +124,23 @@ public class HomeController {
         return "redirect:/home";
     }
 
+
     @GetMapping("/movies/{id}")
     public String movieDetail(Model model, @PathVariable("id") Long id, HttpSession session) {
-        if(session.getAttribute("userId") == null) {
+        if (session.getAttribute("userId") == null) {
             return "redirect:/home";
         }
         Movie movie = movies.findById(id);
         List<Rating> ratings = movies.getRatingsForMovie(id);
+        List<Note> notes = movies.getNotesForMovie(id);
         model.addAttribute("movies", movie);
         model.addAttribute("ratings", ratings);
+        model.addAttribute("notes", notes);
         model.addAttribute("rating", new Rating());
-        model.addAttribute("user", users.findById((Long)session.getAttribute("userId")));
+        model.addAttribute("user", users.findById((Long) session.getAttribute("userId")));
         return "movie";
     }
+
 
 
     @GetMapping("/movies/{id}/edit")
@@ -166,6 +197,64 @@ public class HomeController {
         }
         movies.saveRating(rating);
         return "redirect:/movies/" + movieId;
+    }
+    @PostMapping("/movies/{movieId}/note")
+    public String addNote(@PathVariable("movieId") Long movieId, @RequestParam("note") String noteText, HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            return "redirect:/login";
+        }
+
+        User user = users.findById(userId);
+        Movie movie = movies.findById(movieId);
+
+        Optional<Note> existingNote = movies.findNoteByUserAndMovie(userId, movieId);
+
+        if (existingNote.isPresent()) {
+            Note noteToUpdate = existingNote.get();
+            noteToUpdate.setNote(noteText);
+            movies.saveOrUpdateNote(noteToUpdate);
+        } else {
+            Note newNote = new Note();
+            newNote.setNote(noteText);
+            newNote.setUser(user);
+            newNote.setMovie(movie);
+            movies.saveOrUpdateNote(newNote);
+        }
+
+        return "redirect:/movies/" + movieId;
+    }
+    @PostMapping("/movies/{movieId}/favorite")
+    public String toggleFavorite(@PathVariable("movieId") Long movieId, HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            return "redirect:/login";
+        }
+
+        Movie movie = movies.findById(movieId);
+        if (movie != null) {
+            // Toggle the favorite status
+            Boolean currentFavoriteStatus = movie.getFavorite() != null && movie.getFavorite();
+            movie.setFavorite(!currentFavoriteStatus);
+            movies.updateMovie(movie); // Save the updated movie to the database
+        }
+
+        return "redirect:/home";
+    }
+
+
+
+    @GetMapping("/favorites")
+    public String viewFavorites(Model model, HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            return "redirect:/login";
+        }
+
+        List<Movie> favoriteMovies = movies.getAllFavoriteMovies();
+        model.addAttribute("favoriteMovies", favoriteMovies);
+
+        return "favorite";
     }
 
 

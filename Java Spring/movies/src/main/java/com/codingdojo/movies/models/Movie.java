@@ -23,6 +23,16 @@ public class Movie {
     @NotBlank(message="Description required")
     private String description;
 
+    @Column
+    @NotBlank(message="PictureUrl required")
+    private String pictureUrl;
+
+    @Column(name = "favorite")
+    private Boolean favorite;
+
+    @Column
+    @NotBlank(message="Video TrailerUrl required")
+    private String videoTrailerUrl;
 
     @Column(updatable=false)
     private Date createdAt;
@@ -34,6 +44,7 @@ public class Movie {
 
     @OneToMany(mappedBy="movie", fetch=FetchType.LAZY)
     private List<Rating> ratings;
+
     public double getAverageRating() {
         if (ratings.isEmpty()) {
             return 0.0;
@@ -110,5 +121,54 @@ public class Movie {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
+
+    public String getVideoTrailerUrl() {
+        return videoTrailerUrl;
+    }
+
+    public void setVideoTrailerUrl(String videoTrailerUrl) {
+        this.videoTrailerUrl = videoTrailerUrl;
+    }
+
+    public List<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<Rating> ratings) {
+        this.ratings = ratings;
+    }
+    public Boolean getFavorite() {
+        return favorite;
+    }
+
+    public Boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(Boolean favorite) {
+        this.favorite = favorite;
+    }
+
+    public Movie(Long id, String title, String network, String description, String pictureUrl, Boolean favorite, String videoTrailerUrl, Date createdAt, Date updatedAt, User user, List<Rating> ratings) {
+        this.id = id;
+        this.title = title;
+        this.network = network;
+        this.description = description;
+        this.pictureUrl = pictureUrl;
+        this.favorite = favorite;
+        this.videoTrailerUrl = videoTrailerUrl;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.user = user;
+        this.ratings = ratings;
     }
 }

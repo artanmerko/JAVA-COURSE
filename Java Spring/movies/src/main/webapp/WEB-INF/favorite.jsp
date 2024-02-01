@@ -15,7 +15,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Movies</title>
+    <title>Favorite Movies</title>
     <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/main.css"> <!-- Adjust as per your file structure -->
     <script src="/webjars/jquery/jquery.min.js"></script>
@@ -30,12 +30,11 @@
 <body style="background-color: #F8FAFC;">
 
 <div class="container mt-4">
-    <h1 class="mb-3">Welcome, <c:out value="${user.userName}"/></h1>
+    <h1 class="mb-3">My Favorite Movies</h1>
 
-    <h3 class="mb-3">TV SHOWS</h3>
     <div class="d-flex justify-content-between mb-3">
+        <a href="/home" class="btn btn-outline-secondary">Back to Home</a>
         <a href="/logout" class="btn btn-outline-secondary">Logout</a>
-        <a href="/favorites" class="btn btn-outline-secondary">My Favorite Movies</a>
     </div>
 
     <table class="table table-striped">
@@ -43,7 +42,6 @@
         <tr>
             <th>ID</th>
             <th>Title</th>
-            <th>Favorite</th>
             <th>Network</th>
             <th>Posted By</th>
             <th>Average Rating</th>
@@ -51,24 +49,10 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="movie" items="${movies}">
+        <c:forEach var="movie" items="${favoriteMovies}">
             <tr>
                 <td><c:out value="${movie.id}"/></td>
                 <td><a href="/movies/${movie.id}"><c:out value="${movie.title}"/></a></td>
-                <td>
-                    <c:choose>
-                        <c:when test="${movie.favorite}">
-                            <form method="post" action="/movies/${movie.id}/favorite">
-                                <button type="submit" class="btn btn-danger">Unfavorite</button>
-                            </form>
-                        </c:when>
-                        <c:otherwise>
-                            <form method="post" action="/movies/${movie.id}/favorite">
-                                <button type="submit" class="btn btn-success">Add to Favorites</button>
-                            </form>
-                        </c:otherwise>
-                    </c:choose>
-                </td>
                 <td><c:out value="${movie.network}"/></td>
                 <td><c:out value="${movie.user.userName}"/></td>
                 <td><fmt:formatNumber value="${movie.averageRating}" minFractionDigits="1" maxFractionDigits="1"/></td>
@@ -79,20 +63,7 @@
         </c:forEach>
         </tbody>
     </table>
-    <a href="/addPage" class="btn btn-primary">+ Add a show</a>
-
-    <div class="pagination justify-content-end">
-        <c:if test="${currentPage > 0}">
-            <a href="?page=0" class="page-link">First</a>
-            <a href="?page=${currentPage - 1}" class="page-link">Previous</a>
-        </c:if>
-        <c:if test="${currentPage < totalPages - 1}">
-            <a href="?page=${currentPage + 1}" class="page-link">Next</a>
-            <a href="?page=${totalPages - 1}" class="page-link">Last</a>
-        </c:if>
-    </div>
 
 </div>
 </body>
 </html>
-
